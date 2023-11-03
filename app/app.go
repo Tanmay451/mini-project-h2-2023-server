@@ -17,8 +17,19 @@ func Start() {
 
 	router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "pong")
-	})
+	}).
+		Methods(http.MethodGet).
+		Schemes("http", "https")
 
-	router.HandleFunc("/getAllCustomer", handlers.GetAllCustomer)
+	customerRouter := router.PathPrefix("/customer").Subrouter()
+
+	customerRouter.HandleFunc("/", handlers.GetAllCustomer).
+		Methods(http.MethodGet).
+		Schemes("http", "https")
+
+	customerRouter.HandleFunc("/{id:[0-9]+}", handlers.GetCustomer).
+		Methods(http.MethodGet).
+		Schemes("http", "https")
+
 	log.Fatal(http.ListenAndServe(":8000", router))
 }

@@ -2,16 +2,18 @@ package app
 
 import (
 	"fmt"
-	"log"
+
 	"net/http"
 
 	handlers "github.com/Tanmay451/mini-project-h2-2023-server/handlers"
+
+	log "github.com/Tanmay451/mini-project-h2-2023-server/modules/log"
+	logrus "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
 
 func Start() {
-
 	// mux := http.NewServeMux()
 	router := mux.NewRouter()
 
@@ -31,5 +33,10 @@ func Start() {
 		Methods(http.MethodGet).
 		Schemes("http", "https")
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	if err := http.ListenAndServe(":8000", router); err != nil {
+		log.Logger.WithFields(logrus.Fields{
+			"status": "stop",
+			"error":  err,
+		}).Panicln("App is terminated")
+	}
 }

@@ -5,22 +5,14 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+	"time"
 
+	customer "github.com/Tanmay451/mini-project-h2-2023-server/models/customer"
 	"github.com/gorilla/mux"
 )
 
-type Customer struct {
-	Name string `json:"name" xml:"name"`
-	Age  int    `json:"age" xml:"age"`
-}
-
-func GetAllCustomer(w http.ResponseWriter, r *http.Request) {
-	c := []Customer{
-		{
-			Name: "tanmay",
-			Age:  25,
-		},
-	}
+func GetCustomer(w http.ResponseWriter, r *http.Request) {
+	c := customer.NewCustomer("tanmay", time.Date(2000, 11, 14, 10, 45, 16, 0, time.UTC))
 
 	if r.Header.Get("Content-Type") == "application/xml" {
 		w.Header().Add("Content-Type", "application/xml")
@@ -32,7 +24,7 @@ func GetAllCustomer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(c)
 }
 
-func GetCustomer(w http.ResponseWriter, r *http.Request) {
+func GetCustomerID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fmt.Fprintf(w, vars["id"])
 }

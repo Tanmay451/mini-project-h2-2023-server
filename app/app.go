@@ -25,7 +25,7 @@ func Start() {
 
 	customerRouter := router.PathPrefix("/customer").Subrouter()
 
-	customerRouter.HandleFunc("/", handlers.GetAllCustomer).
+	customerRouter.HandleFunc("/", handlers.GetCustomer).
 		Methods(http.MethodGet).
 		Schemes("http", "https")
 
